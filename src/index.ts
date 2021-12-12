@@ -7,10 +7,10 @@ import setupConnection from './setup/typeorm';
 const { PORT: port, HOST: host } = serverConfig;
 
 (async () => {
-        await setupConnection();
+  await setupConnection();
 
-        const server = await serverSetup();
-        server.listen(`${port}`);
-        console.log(`Server started on ${host}:${port}`);
-    }
+  const server = await serverSetup();
+  server.listen(`${port}`);
+  console.log(`Server started on ${host}:${port}`);
+}
 )();

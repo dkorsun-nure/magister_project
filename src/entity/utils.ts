@@ -1,20 +1,20 @@
 import {
-    CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity,
+  CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity,
 } from 'typeorm';
 
 export interface IDefaultData {
-    id: number,
-    createdAt: Date,
-    updatedAt: Date,
+  id: number,
+  createdAt: Date,
+  updatedAt: Date,
 }
 
 export abstract class DefaultEntity extends BaseEntity {
-    @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn()
+  @CreateDateColumn()
     createdAt: Date;
 
-    @UpdateDateColumn()
+  @UpdateDateColumn()
     updatedAt: Date;
 }
