@@ -1,0 +1,38 @@
+{
+ "root": true,
+ "parser": "@typescript-eslint/parser",
+ "extends": [
+  "airbnb-typescript/base",
+  "eslint:recommended",
+  "plugin:import/recommended",
+  "plugin:@typescript-eslint/eslint-recommended",
+  "plugin:@typescript-eslint/recommended"
+ ],
+ "plugins": [
+  "@typescript-eslint",
+  "import"
+ ],
+ "parserOptions": {
+  "project": "./tsconfig.eslint.json"
+ },
+ "env": {
+  "es6": true,
+  "browser": true,
+  "node": true
+ },
+ "rules": {
+//  "indent": ["error", 2],
+  "@typescript-eslint/indent": ["error", 2],
+  "max-len": "off",
+  //        "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
+  "@typescript-eslint/lines-between-class-members": ["error", "always"],
+  "import/newline-after-import": [0],
+  "import/prefer-default-export": [0],
+  "import/no-cycle": [0],
+  "no-bitwise": [0],
+  "no-nested-ternary": [0],
+  "no-trailing-spaces": ["error", {"skipBlankLines": true}],
+  "no-restricted-globals": [0],
+  "max-classes-per-file": [0]
+ }
+}
