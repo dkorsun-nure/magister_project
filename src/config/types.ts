@@ -13,4 +13,11 @@ export enum SensorTypes {
 
 export enum SocketEvents {
   SENSOR_STATE = 'SENSOR_STATE',
+  SENSOR_GROUP_STATE = 'SENSOR_GROUP_STATE',
+}
+
+
+export interface ISensorStateSocketData {
+  id: string,
+  parameter: string,
 }
