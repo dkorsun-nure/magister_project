@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "lib": ["es6", "dom", "esnext.asynciterable"],
+    "lib": ["es6", "esnext.asynciterable"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitReturns": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
     "noUnusedLocals": true,
     "removeComments": true,
     "noImplicitAny": true,

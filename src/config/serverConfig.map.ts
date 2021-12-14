@@ -7,9 +7,23 @@ interface IPostgreSqlConfig {
   readonly DIALECT: 'postgres';
 }
 
+interface ISocketServerConfig {
+  readonly PORT: number;
+}
+
+interface ISocketClientConfig {
+  readonly SERVER_URL: string;
+}
+
+interface IAPIServerConfig {
+  readonly PORT: number;
+}
+
 export interface IServerConfig {
   readonly NODE_ENV: string;
   readonly HOST: string;
-  readonly PORT: string | number;
+  readonly API: IAPIServerConfig;
+  readonly SOCKET_CLIENT: ISocketClientConfig;
+  readonly SOCKET_SERVER: ISocketServerConfig;
   readonly POSTGRESQL: IPostgreSqlConfig;
 }

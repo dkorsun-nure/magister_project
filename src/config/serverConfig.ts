@@ -6,7 +6,15 @@ dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : undefined 
 const serverConfig = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST,
-  PORT: process.env.PORT,
+  API: {
+    PORT: +process.env.API_PORT,
+  },
+  SOCKET_CLIENT: {
+    SERVER_URL: process.env.SOCKET_CLIENT_SERVER_URL,
+  },
+  SOCKET_SERVER: {
+    PORT: +process.env.SOCKET_SERVER_PORT,
+  },
   POSTGRESQL: {
     URL: process.env.POSTGRESQL__URL,
     USER: process.env.POSTGRESQL__USER,
