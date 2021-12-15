@@ -2,8 +2,10 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import serverConfig from './serverConfig';
 
 import Sensor from '../entity/Sensor';
+import HeatingStation from '../entity/HeatingStation';
+import SensorLinkedToHeatingStation from '../entity/SensorLinkedToHeatingStation';
 
-const typeormConfig = {
+const typeormConfig = (resync = false):PostgresConnectionOptions => ({
   type: 'postgres',
   host: serverConfig.POSTGRESQL.URL,
   port: serverConfig.POSTGRESQL.PORT,
@@ -12,8 +14,11 @@ const typeormConfig = {
   database: serverConfig.POSTGRESQL.DB,
   entities: [
     Sensor,
+    HeatingStation,
+    SensorLinkedToHeatingStation,
   ],
-  synchronize: true,
-} as PostgresConnectionOptions;
+  synchronize: resync,
+  dropSchema: resync,
+});
 
 export default typeormConfig;

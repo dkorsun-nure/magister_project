@@ -1,4 +1,6 @@
-import dotenv from 'dotenv';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+// const dotenv = require('dotenv');
+import * as dotenv from 'dotenv';
 import { IServerConfig } from './serverConfig.map';
 
 dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : undefined });
@@ -6,6 +8,7 @@ dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : undefined 
 const serverConfig = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   HOST: process.env.HOST,
+  HEATING_STATION_ID: process.env.HEATING_STATION_ID,
   API: {
     PORT: +process.env.API_PORT,
   },

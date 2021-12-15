@@ -22,6 +22,7 @@ interface IAPIServerConfig {
 export interface IServerConfig {
   readonly NODE_ENV: string;
   readonly HOST: string;
+  readonly HEATING_STATION_ID: string;
   readonly API: IAPIServerConfig;
   readonly SOCKET_CLIENT: ISocketClientConfig;
   readonly SOCKET_SERVER: ISocketServerConfig;

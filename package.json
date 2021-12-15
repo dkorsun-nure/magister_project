@@ -4,7 +4,8 @@
   "description": "",
   "main": "liv/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:infrastructure": "ts-node src/scripts/infrastructure.seed.ts NODE_ENV=DEBUG_DB"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,8 @@
     "socket.io": "^4.4.0",
     "socket.io-client": "^4.4.0",
     "ts-node": "^10.4.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "unique-names-generator": "^4.6.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
