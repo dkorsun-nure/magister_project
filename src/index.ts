@@ -8,15 +8,24 @@ import { Connection } from 'typeorm';
 import { Server } from 'socket.io';
 import socketServerSetup from './setup/socketServerSetup';
 import socketClientSetup from './setup/socketClientSetup';
+import redisClientSetup from './setup/redisClientSetup';
+import { Redis } from 'ioredis';
 
 const {
   API,
-  // SOCKET_CLIENT, SOCKET_SERVER,
   HOST: host,
 } = serverConfig;
 const { PORT: API_PORT } = API;
-// const { SERVER_URL: SOCKET_CLIENT_SERVER_URL } = SOCKET_CLIENT;
-// const { PORT: SOCKET_SERVER_PORT } = SOCKET_SERVER;
+
+export interface ISocketClientParameters {
+  redis: Redis
+  connection: Connection
+}
+
+export interface ISocketServerParameters {
+  redis: Redis
+
+}
 
 class CoreWorker {
   db: Connection;
@@ -41,8 +50,14 @@ class CoreWorker {
 (async function () {
 
   const db = await setupConnection();
-  const socketClient = await socketClientSetup();
-  const socketServer = await socketServerSetup();
+  const redis = await redisClientSetup();
+  const socketClient = await socketClientSetup({
+    redis,
+    connection: db,
+  });
+  const socketServer = await socketServerSetup({
+    redis,
+  });
 
   new CoreWorker(db, socketClient, socketServer);
 

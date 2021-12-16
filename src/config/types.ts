@@ -14,10 +14,13 @@ export enum SensorTypes {
 export enum SocketEvents {
   SENSOR_STATE = 'SENSOR_STATE',
   SENSOR_GROUP_STATE = 'SENSOR_GROUP_STATE',
+  HEATING_STATION_INITIAL_SENSORS_STATE = 'HEATING_STATION_INITIAL_SENSORS_STATE',
 }
 
+export type SensorValue = number | boolean;
 
 export interface ISensorStateSocketData {
   id: string,
-  parameter: string,
+  type: SensorTypes,
+  value: SensorValue,
 }

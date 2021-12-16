@@ -1,5 +1,7 @@
 import { Server } from 'socket.io';
 import { SocketEvents, ISensorStateSocketData } from '../config/types';
+import serverConfig from '../config/serverConfig';
+import { ISocketServerParameters } from '../index';
 // import SocketServerController from '../controllers/socketServer';
 
 export interface IServerToClientSocketServerEvents {
@@ -7,9 +9,16 @@ export interface IServerToClientSocketServerEvents {
 }
 
 
-export default async (): Promise<Server> => {
-  const server = new Server<unknown, IServerToClientSocketServerEvents, unknown, ISensorStateSocketData[]>();
-  // const socketServerController = new SocketServerController(server);
+export default async (parameters: ISocketServerParameters): Promise<Server> => {
+  // const { redis } = parameters;
+
+  const server = new Server<unknown, IServerToClientSocketServerEvents, unknown, ISensorStateSocketData[]>(+serverConfig.SOCKET_SERVER.PORT);
+  // const socketServerController = new SocketServerController(
+  //   server,
+  //   redis,
+  // );
+
+  // console.log(socketServerController);
 
   return server;
 };

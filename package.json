@@ -5,6 +5,7 @@
   "main": "liv/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node src/index.ts",
     "seed:infrastructure": "ts-node src/scripts/infrastructure.seed.ts",
     "demo:sensors-socket-server": "ts-node src/demo/sensorsSocketServer"
   },
