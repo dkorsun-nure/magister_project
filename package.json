@@ -5,7 +5,8 @@
   "main": "liv/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:infrastructure": "ts-node src/scripts/infrastructure.seed.ts NODE_ENV=DEBUG_DB"
+    "seed:infrastructure": "ts-node src/scripts/infrastructure.seed.ts",
+    "demo:sensors-socket-server": "ts-node src/demo/sensorsSocketServer"
   },
   "repository": {
     "type": "git",

@@ -12,7 +12,7 @@ export interface ISensorData {
   type: SensorTypes
 }
 
-type ISensorShortData =  {
+export type ISensorShortData =  {
   type: SensorTypes
 } & Pick<IDefaultData, 'id'>;
 
