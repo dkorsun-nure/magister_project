@@ -17,8 +17,11 @@ export interface IClientToServerClientSocketEvents {
   [SocketEvents.HEATING_STATION_INITIAL_SENSORS_STATE]: (id: string) => Promise<void>
 }
 
+// todo refactor demo/core socket server type parameters
+export type SocketClient = SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketEvents>;
+
 export default async (parameters: ISocketClientParameters):
-Promise<SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketEvents>> => {
+Promise<SocketClient> => {
   try {
     const { redis, connection } = parameters;
     const sensorsService = new SensorsService(connection);
@@ -30,19 +33,34 @@ Promise<SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketE
       redis,
     );
 
-    const sensors = await sensorsService.getHeatingStationLinkedSensors(serverConfig.HEATING_STATION_ID);
-
     socket.on('connect', () => {
       socketController.onSocketConnected();
     });
 
+    const sensors = await sensorsService.getHeatingStationLinkedSensors(serverConfig.HEATING_STATION_ID);
+
     sensors.map((sensor) => {
-      socket.on(`${SocketEvents.SENSOR_STATE}:${sensor.id}`, async (data: ISensorStateSocketData) => {
-        console.log('\nsocket data: ', data);
+      socket.on(
+        `${SocketEvents.SENSOR_STATE}:${sensor.id}`,
+        async (data: ISensorStateSocketData): Promise<void> => {
+          await socketController.onSensorStateEvent(data);
+        });
+    });
+
+    // important blocking socketServer initialization method witch is waiting for event to fullfill socketClientController with initial sensors data
+    const isReady = () => new Promise<void>((resolve, reject) => {
+      socket.on(SocketEvents.HEATING_STATION_INITIAL_SENSORS_STATE, async (data) => {
+        try {
+          await socketController.onSensorsInitialState(data);
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
       });
     });
 
 
+    await isReady();
     return socket;
 
   } catch (e) {
