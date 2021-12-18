@@ -1,7 +1,8 @@
-/** Converts Scalar values to a strings */
 import { Redis } from 'ioredis';
-import { ISensorStateSocketData, SensorValue } from './config/types';
+import { SensorValue } from './config/types';
+import { IInternalSensorStateDate } from './controllers/socketServer';
 
+/** Converts Scalar values to a strings */
 export class SensorsValueToStringParser {
 
   /**
@@ -90,25 +91,23 @@ export class RedisCommands {
     );
   }
 
-  static async readEntriesInStreams(
+  static async getLastStreamsEntriesOnlyAfterSpecificMilliseconds(
     redis: Redis,
-    streamIds: string[],
-    params?: {
-      count?: number
-    },
-  ): Promise<IxreadResult> {
-
-    return redis.xread(
-      params?.count ? params.count + 'STREAMS'
-        : 'STREAMS',
-      ...streamIds,
-      streamIds.map(() => '0'),
+    streamId: string,
+    milliseconds: number,
+  ): Promise<IxrangeResult> {
+    return redis.xrevrange(
+      streamId,
+      '+',
+      `${milliseconds + 1}-0`,
+      'COUNT',
+      '1',
     );
   }
 }
 
 export class RedisParser {
-  static redisLikeValueArrayToObject(array: string[]): { [any: string]: string } {
+  static redisLikeValuesArrayToObject(array: string[]): { [any: string]: string } {
     return array.reduce((result, value, i, arr) => {
       // is odd
       if (i % 2) {
@@ -126,19 +125,30 @@ export class RedisParser {
       return string === 'true';
     }
   }
+
+  static redisStreamEntryIdToMilliseconds(string: string): number {
+    const numberPart = string.split('-')[0];
+    if (isNaN(+numberPart)) {
+      throw new Error(`Redis stream entry id is in wrong format: ${string}`);
+    } else {
+      return +numberPart;
+    }
+  }
 }
 
 export class RedisMapper {
-  static mapXreadStreamToLastEntry(read: IxreadSingleResult): & Pick<ISensorStateSocketData, 'id' | 'value'> {
+  static mapXreadStreamToLastEntry(read: IxreadSingleResult): Omit<IInternalSensorStateDate, 'type'> {
 
     const streamEntries = read[1];
     const streamEntry = streamEntries[streamEntries.length - 1];
     const valueArr = streamEntry[1];
-    const valueString = RedisParser.redisLikeValueArrayToObject(valueArr)?.value;
+    const valueString = RedisParser.redisLikeValuesArrayToObject(valueArr)?.value;
     const value = RedisParser.redisStringToSensorValue(valueString);
+    const lastRead = +streamEntry[0].split('-')[0];
     return {
       id: read[0],
       value,
+      lastRead,
     };
   }
 }

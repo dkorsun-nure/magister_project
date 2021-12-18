@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 import { SocketEvents, ISensorStateSocketData } from '../config/types';
 import serverConfig from '../config/serverConfig';
 import { ISocketServerParameters } from '../index';
-import SocketServerController from '../controllers/socketServer';
+import SocketServerController, { IInternalSensorStateDate } from '../controllers/socketServer';
 import { getConnection } from 'typeorm';
 
 export interface IServerToClientSocketServerEvents {
@@ -10,12 +10,12 @@ export interface IServerToClientSocketServerEvents {
 }
 
 
-export type SocketServer = Server<unknown, IServerToClientSocketServerEvents, unknown, ISensorStateSocketData[]>;
+export type SocketServer = Server<unknown, IServerToClientSocketServerEvents, unknown, IInternalSensorStateDate[]>;
 
 export default async (parameters: ISocketServerParameters): Promise<SocketServer> => {
   const { redis } = parameters;
 
-  const server = new Server<unknown, IServerToClientSocketServerEvents, unknown, ISensorStateSocketData[]>(+serverConfig.SOCKET_SERVER.PORT);
+  const server = new Server<unknown, IServerToClientSocketServerEvents, unknown, IInternalSensorStateDate[]>(+serverConfig.SOCKET_SERVER.PORT);
   const socketServerController = new SocketServerController(
     getConnection(),
     server,
@@ -27,6 +27,7 @@ export default async (parameters: ISocketServerParameters): Promise<SocketServer
   });
 
   await socketServerController.initializeSensors();
+  socketServerController.startTicking();
 
   return server;
 };
