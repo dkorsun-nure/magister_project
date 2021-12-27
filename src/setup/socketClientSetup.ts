@@ -23,7 +23,7 @@ export type SocketClient = SocketIO<IServerToClientClientSocketEvents, IClientTo
 /**
  * @function anonymous - Async function for SocketClient configuration
  * @param parameters - ISocketClientParameters
- * @returns - Promise with rejected socket @property
+ * @returns - Promise with resolved socket @property
  */
 export default async (parameters: ISocketClientParameters):
 Promise<SocketClient> => {

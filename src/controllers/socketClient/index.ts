@@ -8,22 +8,26 @@ import { RedisCommands } from '../../utils';
 /**
  * @class SocketClientController
  * @description controller for specific socket client purposes
- * @constructor
- * @param {SocketIO} socket - connected socket instance
- * @param {Redis} redis - connected redis client
  */
 export default class SocketClientController {
 
   /**
-   * @property socket - connected socket instance
+   * @property socket
+   * @description connected socket instance
    */
   socket: SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketEvents>;
 
   /**
-   * @property redis - connected redis client
+   * @property redis
+   * @description connected redis-client
    */
   redis: Redis;
 
+  /**
+   * @constructor
+   * @param {SocketIO} socket - connected socket instance
+   * @param {Redis} redis - connected redis client
+   */
   constructor(
     socket: SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketEvents>,
     redis: Redis,
