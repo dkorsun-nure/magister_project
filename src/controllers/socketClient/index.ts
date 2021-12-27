@@ -5,11 +5,23 @@ import { Redis } from 'ioredis';
 import serverConfig from '../../config/serverConfig';
 import { RedisCommands } from '../../utils';
 
-
+/**
+ * @class SocketClientController
+ * @description controller for specific socket client purposes
+ * @constructor
+ * @param {SocketIO} socket - connected socket instance
+ * @param {Redis} redis - connected redis client
+ */
 export default class SocketClientController {
 
+  /**
+   * @property socket - connected socket instance
+   */
   socket: SocketIO<IServerToClientClientSocketEvents, IClientToServerClientSocketEvents>;
 
+  /**
+   * @property redis - connected redis client
+   */
   redis: Redis;
 
   constructor(
@@ -20,17 +32,34 @@ export default class SocketClientController {
     this.redis = redis;
   }
 
+  /**
+   * @function onSocketConnected
+   * @description when socket connected emits his signal for retrieving of heating station sensors initial state data
+   * @returns undefined
+   */
   onSocketConnected(): void {
     console.log('connected socket: ', this.socket.id);
     this.socket.emit(SocketEvents.HEATING_STATION_INITIAL_SENSORS_STATE, serverConfig.HEATING_STATION_ID + '');
   }
 
+  /**
+   * @function onSensorsInitialState async
+   * @param data - Array of sensors initial state
+   * @returns Promise<undefined>
+   * @description each retrieved sensor data, adds to related redis stream
+   */
   async onSensorsInitialState(data: ISensorStateSocketData[]): Promise<void> {
     await Promise.all(data.map(async (sensorData) => {
       await RedisCommands.xadd(this.redis, sensorData.id, { value: sensorData.value });
     }));
   }
 
+  /**
+   * @function onSensorStateEvent async
+   * @param data - sensor state
+   * @returns Promise<undefined>
+   * @description retrieved sensor data, adds to related redis stream
+   */
   async onSensorStateEvent(data: ISensorStateSocketData): Promise<void> {
     await RedisCommands.xadd(this.redis, data.id, { value: data.value });
   }
