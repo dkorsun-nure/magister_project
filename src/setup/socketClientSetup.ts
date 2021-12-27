@@ -1,8 +1,8 @@
-import {io, Socket as SocketIO} from 'socket.io-client';
+import { io, Socket as SocketIO } from 'socket.io-client';
 import serverConfig from '../config/serverConfig';
-import {ISensorStateSocketData, SocketEvents} from '../config/types';
+import { ISensorStateSocketData, SocketEvents } from '../config/types';
 import SocketClientController from '../controllers/socketClient';
-import {ISocketClientParameters} from '../index';
+import { ISocketClientParameters } from '../index';
 import SensorsService from '../services/sensorsService';
 
 type SocketData = `${SocketEvents.SENSOR_STATE}:${string}`;
@@ -25,11 +25,10 @@ export type SocketClient = SocketIO<IServerToClientClientSocketEvents, IClientTo
  * @param parameters - ISocketClientParameters
  * @returns - Promise with rejected socket @property
  */
-
 export default async (parameters: ISocketClientParameters):
-  Promise<SocketClient> => {
+Promise<SocketClient> => {
   try {
-    const {redis, connection} = parameters;
+    const { redis, connection } = parameters;
     const sensorsService = new SensorsService(connection);
 
     /**
