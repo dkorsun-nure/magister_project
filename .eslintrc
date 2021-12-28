@@ -21,10 +21,8 @@
   "node": true
  },
  "rules": {
-//  "indent": ["error", 2],
   "@typescript-eslint/indent": ["error", 2],
   "max-len": "off",
-  //        "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
   "@typescript-eslint/lines-between-class-members": ["error", "always"],
   "import/newline-after-import": [0],
   "import/prefer-default-export": [0],
