@@ -27,6 +27,14 @@ export interface ISocketServerParameters {
 
 }
 
+/**
+ * Core Worker
+ * @description Represents main class with all servers launched inside
+ * @constructor
+ * @param {Connection} db - TypeORM db connection
+ * @param {SocketIO} socletClient - client connected to Socket Sensors Server
+ * @param {Server} socketServer - server witch broadcasts precessed data for real-time consumers
+ *  */
 class CoreWorker {
   db: Connection;
 
